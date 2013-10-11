@@ -1,0 +1,99 @@
+启动adb
+D:\HanZheng\adt-bundle-windows-x86-20130219\sdk\platform-tools>
+
+adb start-server
+-------------------
+netstat -a -o 5037
+tasklist /fi "pid eq 5872"
+
+------
+自定义控件 包名
+xmlns:mapbar="http://schemas.android.com/apk/res/com.hisense.hiatis.android"
+
+--------
+判断权限
+context.checkCallingOrSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
+
+-----------
+语音
+SpeechRecognizer sRecogniazer = SpeechRecognizer.getRecognizer();
+Context con = context;
+						((Activity) con).setVolumeControlStream(AudioManager.STREAM_MUSIC);
+						SpeechRecognizer recognizer = SpeechRecognizer.createRecognizer(con, "appid=" + APP_ID);
+						recognizer = SpeechRecognizer.getRecognizer();
+						recognizer.startListening(mRecoListener, "sms", null, null);
+-----------
+//发送通知
+				Notification notification = new Notification(R.drawable.icon, "接收到了一条推送消息", System.currentTimeMillis());
+				notification.flags = Notification.FLAG_AUTO_CANCEL;
+				Intent pIntent = new Intent(context, MapViewActivity.class);
+				intent.putExtra("data", data);
+				pIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+				PendingIntent pendingIntent= PendingIntent.getActivity(context, id, pIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+				notification.setLatestEventInfo(context, "标题", "this is content:"+data, pendingIntent);
+				mNotificationManager.notify(id, notification);
+----------
+spinner
+ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, ARRAY);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mSpinner.setAdapter(adapter);
+----------
+ 获取IMSI标识
+      String myIMSI = android.os.SystemProperties.get(android.telephony.TelephonyProperties.PROPERTY_IMSI);
+      获取手机号
+      TelephonyManager telephonyMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE); 
+      String tel = telephonyMgr.getLine1Number(); 
+      
+      获取IMEI
+      String imei = tm.getDeviceId(); 
+----------------
+关于InputStream.read(byte[] b)和InputStream.read(byte[] b,int off,int len)这两个方法都是用来从流里读取多个字节的，有经验的程序员就会发现，这两个方法经常 读取不到自己想要读取的个数的字节。比如第一个方法，程序员往往希望程序能读取到b.length个字节，而实际情况是，系统往往读取不了这么多。仔细阅读Java的API说明就发现了，这个方法 并不保证能读取这么多个字节，它只能保证最多读取这么多个字节(最少1个)。因此，如果要让程序读取count个字节，最好用以下代码：
+Java代码  
+int count = 100;  
+byte[] b = new byte[count];  
+int readCount = 0; // 已经成功读取的字节的个数  
+while (readCount < count) {  
+    readCount += inStream.read(b, readCount, count - readCount);  
+}  
+ 这样就能保证读取100个字节，除非中途遇到IO异常或者到了数据流的结尾情况！
+-------------------
+xml解析
+XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		XmlPullParser xmpp = factory.newPullParser();
+		xmpp.setInput(new StringReader(xml));
+		int event = xmpp.getEventType();
+while (event != XmlPullParser.END_DOCUMENT) {
+		if(event == XmlPullParser.START_DOCUMENT){
+				
+			}
+			else if(event == XmlPullParser.START_TAG){
+				
+			}
+			else if (event == XmlPullParser.END_TAG) {
+						
+			}
+			event = xmpp.next();
+}
+-------------------
+动态获取resourceId
+int drawable_id = context.getResources().getIdentifier("ball_red", "drawable", context.getPackageName());
+
+-------------------
+播放
+public void playSound(int resId) {
+		// Stop current player, if there's one playing
+		if (null != mCurrentMediaPlayer) {
+			mCurrentMediaPlayer.stop();
+			mCurrentMediaPlayer.release();
+		}
+
+		mCurrentMediaPlayer = MediaPlayer.create(mContext, resId);
+		if (null != mCurrentMediaPlayer) {
+			mCurrentMediaPlayer.start();
+		}
+	}
+--------------------
+取资源数组
+TypedArray iconArray = getResources().obtainTypedArray(R.array.sch_grideview_item_icon_v2);
+iconArray.getResourceId(i, 0)
