@@ -9,7 +9,7 @@ tasklist /fi "pid eq 5872"
 ------
 自定义控件 包名
 xmlns:mapbar="http://schemas.android.com/apk/res/com.hisense.hiatis.android"
-xmlns:ptr="http://schemas.android.com/apk/res-auto"
+
 --------
 判断权限
 context.checkCallingOrSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
@@ -97,4 +97,3 @@ public void playSound(int resId) {
 取资源数组
 TypedArray iconArray = getResources().obtainTypedArray(R.array.sch_grideview_item_icon_v2);
 iconArray.getResourceId(i, 0)
----------------------
