@@ -97,3 +97,7 @@ public void playSound(int resId) {
 取资源数组
 TypedArray iconArray = getResources().obtainTypedArray(R.array.sch_grideview_item_icon_v2);
 iconArray.getResourceId(i, 0)
+-----------------
+自定义属性
+TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MixAdView, 0, 0);
+String mTAG = a.getString(R.styleable.MixAdView_tag);
