@@ -101,3 +101,77 @@ iconArray.getResourceId(i, 0)
 自定义属性
 TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MixAdView, 0, 0);
 String mTAG = a.getString(R.styleable.MixAdView_tag);
+-----------------
+//将dp换算为px
+int width_px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mWidth, getResources().getDisplayMetrics());
+
+------------------
+将软键盘enter键转为搜索键
+
+ <EditText
+            android:id="@+id/road_condition_detail_searchroadtext"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10.0dip"
+            android:background="@null"
+            android:hint="@string/hint_search_road"
+            android:lines="1"
+            android:textColor="#D8D8D8"
+            android:textSize="16.0sp" />
+
+mRoadSearchText.setOnEditorActionListener(onEditorActionListener);
+//搜索按钮点击
+private OnEditorActionListener onEditorActionListener = new OnEditorActionListener() {
+		
+		@Override
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			// TODO Auto-generated method stub
+			if(actionId == EditorInfo.IME_ACTION_SEARCH){
+				String txt = v.getText().toString();
+				Log.d(TAG, "search clicked,"+txt);
+			}
+			return false;
+		}
+	};
+------------------------------
+activity 背景透明
+manifest.xml
+<activity android:name="com.hisense.hiatis.android.appwidget.RoadConditionDetailActivity" android:theme="@style/Theme.Translucent"></activity>
+
+styles.xml
+ <style name="Theme.Translucent" parent="android:style/Theme.Translucent">
+        <item name="android:windowBackground">@drawable/translucent_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorForeground">#fff</item>
+ </style>
+-------------------------------
+软键盘显示 遮挡
+ WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED,
+ WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE,
+ WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN,
+ WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING,
+
+SOFT_INPUT_ADJUST_NOTHING:         不调整(输入法完全直接覆盖住,未开放此参数)
+SOFT_INPUT_ADJUST_PAN:                 把整个Layout顶上去露出获得焦点的EditText,不压缩多余空间，见图1
+SOFT_INPUT_ADJUST_RESIZE:            整个Layout重新编排,重新分配多余空间，见图2
+SOFT_INPUT_ADJUST_UNSPECIFIED:  系统自己根据内容自行选择上两种方式的一种执行(默认配置)
+
+<activity android:name=".LoginAc"
+                  android:label="@string/app_name"
+                  android:windowSoftInputMode="stateHidden|adjustResize">
+</activity>
+
+getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+--------------------------------
+平板适配
+res/layout-large
+res/layout-xlarge
+res/layout-sw600dp
+res/layout-sw720dp
+res/layout-sw800dp
+
+res/values-large
+res/values-xlarge
