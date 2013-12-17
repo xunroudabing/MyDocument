@@ -31,6 +31,7 @@ Context con = context;
 				pIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
 				PendingIntent pendingIntent= PendingIntent.getActivity(context, id, pIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 				notification.setLatestEventInfo(context, "标题", "this is content:"+data, pendingIntent);
+				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.notify(id, notification);
 ----------
 spinner
@@ -175,3 +176,20 @@ res/layout-sw800dp
 
 res/values-large
 res/values-xlarge
+------------------------------------
+httpclient 连接超时 读取数据超时设置
+int CONNECTION_TIMEOUT = 20000;
+HttpClient httpClient = new HttpClient();
+httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(CONNECTION_TIMEOUT);
+httpClient.getHttpConnectionManager().getParams().setSoTimeout(CONNECTION_TIMEOUT);
+------------------------------------
+控件动画效果
+static Animation zoomOut;
+
+if(zoomEnter == null){
+	zoomEnter = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_enter);
+}
+
+btnDel.startAnimation(zoomEnter);
+-----------------
+-keep class * extends android.app.Dialog
